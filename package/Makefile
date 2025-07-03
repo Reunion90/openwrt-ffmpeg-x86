@@ -8,12 +8,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=ffmpeg
-PKG_VERSION:=6.1.1
+PKG_VERSION:=5.1.4
 PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.xz
-PKG_SOURCE_URL:=https://ffmpeg.org/releases/
-PKG_HASH:=8684f4b00f94b85461884c3719382f1261f0d9eb3d59640a93e4c27629637713
+PKG_SOURCE_URL:=https://ffmpeg.org/releases/ \
+		https://github.com/FFmpeg/FFmpeg/releases/download/n$(PKG_VERSION)/
+PKG_HASH:=54383bb890a1cd62580e9f1eaa8081203196ed53db9aeb4643b516ebc9c6b4cb
 
 PKG_MAINTAINER:=Ted Hess <thess@kitschensync.net>, \
 		Ian Leonard <antonlacon@gmail.com>
@@ -74,7 +75,7 @@ $(call Package/ffmpeg/Default)
  SECTION:=libs
  CATEGORY:=Libraries
  TITLE+= libraries (full)
- DEPENDS+= +libx264 +PACKAGE_libffmpeg-full:libopus +PACKAGE_libffmpeg-full:libvorbis
+ DEPENDS+= +libx264 +PACKAGE_libffmpeg-full:libopus +PACKAGE_libffmpeg-full:libvorbis +libpthread +zlib +libbz2
  PROVIDES:= libffmpeg
  VARIANT:=full
 endef

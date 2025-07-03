@@ -12,14 +12,14 @@ Your GitHub Actions are currently building FFmpeg packages for OpenWrt!
 ### ⏱️ Build Timeline
 - **Build Duration**: ~15-20 minutes
 - **Target**: OpenWrt 24.10 x86_64
-- **FFmpeg Version**: 6.1.1
+- **FFmpeg Version**: 5.1.4
 - **Features**: H.264, libx264, Opus, Vorbis
 
 ### 📦 Expected Packages
 When the build completes, you'll get:
-- `ffmpeg_6.1.1-1_x86_64.ipk` - FFmpeg command line tool
-- `ffprobe_6.1.1-1_x86_64.ipk` - Media analysis tool  
-- `libffmpeg-full_6.1.1-1_x86_64.ipk` - Full FFmpeg libraries
+- `ffmpeg_5.1.4-1_x86_64.ipk` - FFmpeg command line tool
+- `ffprobe_5.1.4-1_x86_64.ipk` - Media analysis tool  
+- `libffmpeg-full_5.1.4-1_x86_64.ipk` - Full FFmpeg libraries
 - `libx264_*_x86_64.ipk` - x264 encoder library
 
 ### 🎯 How to Trigger More Builds

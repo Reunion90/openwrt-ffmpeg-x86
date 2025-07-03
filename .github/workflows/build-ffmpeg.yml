@@ -58,12 +58,20 @@ jobs:
       run: |
         mkdir -p /tmp/openwrt-sdk/package/multimedia/ffmpeg
         cp -r package/* /tmp/openwrt-sdk/package/multimedia/ffmpeg/
+        # Verify package files were copied
+        ls -la /tmp/openwrt-sdk/package/multimedia/ffmpeg/
+        echo "Checking Makefile content:"
+        head -20 /tmp/openwrt-sdk/package/multimedia/ffmpeg/Makefile
         
     - name: Update feeds
       run: |
         cd /tmp/openwrt-sdk
+        # Add packages feed which contains x264
+        echo "src-git packages https://git.openwrt.org/feed/packages.git;openwrt-24.10" >> feeds.conf.default
         ./scripts/feeds update -a
         ./scripts/feeds install -a
+        # Specifically install x264 package
+        ./scripts/feeds install x264
         
     - name: Configure build
       run: |
@@ -71,23 +79,61 @@ jobs:
         make defconfig
         echo "CONFIG_PACKAGE_ffmpeg=y" >> .config
         echo "CONFIG_PACKAGE_ffprobe=y" >> .config
+        echo "CONFIG_PACKAGE_libffmpeg-full=y" >> .config
+        echo "CONFIG_PACKAGE_libx264=y" >> .config
         echo "CONFIG_FFMPEG_ENCODER_LIBX264=y" >> .config
         echo "CONFIG_FFMPEG_DECODER_H264=y" >> .config
         make defconfig
+        # Show the final configuration
+        grep -E "(FFMPEG|x264)" .config || echo "No FFmpeg/x264 config found"
         
     - name: Build FFmpeg
       run: |
         cd /tmp/openwrt-sdk
+        # Check if the package exists before building
+        if [ ! -d "package/multimedia/ffmpeg" ]; then
+          echo "ERROR: FFmpeg package not found!"
+          find package -name "*ffmpeg*" -type d
+          exit 1
+        fi
+        
+        # Try to build x264 first if available
+        if make package/libs/x264/compile V=s -j$(nproc) 2>/dev/null; then
+          echo "x264 built successfully"
+        else
+          echo "x264 build failed or not available, continuing..."
+        fi
+        
+        # Build FFmpeg
+        echo "Building FFmpeg..."
         make package/multimedia/ffmpeg/compile V=s -j$(nproc)
         
     - name: Collect artifacts
       run: |
         cd /tmp/openwrt-sdk
         mkdir -p /tmp/artifacts
-        find bin/packages -name "*.ipk" -path "*/multimedia/*" -exec cp {} /tmp/artifacts/ \;
-        find bin/packages -name "*ffmpeg*" -exec cp {} /tmp/artifacts/ \;
-        find bin/packages -name "*x264*" -exec cp {} /tmp/artifacts/ \;
+        
+        # Show what packages were built
+        echo "All built packages:"
+        find bin/packages -name "*.ipk" | head -20
+        
+        # Collect multimedia packages
+        find bin/packages -name "*.ipk" -path "*/multimedia/*" -exec cp {} /tmp/artifacts/ \; || true
+        # Collect FFmpeg packages specifically
+        find bin/packages -name "*ffmpeg*" -exec cp {} /tmp/artifacts/ \; || true
+        # Collect x264 packages
+        find bin/packages -name "*x264*" -exec cp {} /tmp/artifacts/ \; || true
+        
+        echo "Collected artifacts:"
         ls -la /tmp/artifacts/
+        
+        # Ensure we have at least one package
+        if [ $(ls /tmp/artifacts/*.ipk 2>/dev/null | wc -l) -eq 0 ]; then
+          echo "ERROR: No IPK packages found!"
+          echo "Available packages:"
+          find bin/packages -name "*.ipk" | head -10
+          exit 1
+        fi
         
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
