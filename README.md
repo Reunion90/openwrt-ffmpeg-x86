@@ -31,7 +31,7 @@ The repository includes automated builds using GitHub Actions:
 
 ### Build Status
 
-[![Build FFmpeg for OpenWrt x86_64](https://github.com/yourusername/openwrt-ffmpeg-x86/actions/workflows/build-ffmpeg.yml/badge.svg)](https://github.com/yourusername/openwrt-ffmpeg-x86/actions/workflows/build-ffmpeg.yml)
+[![Build FFmpeg for OpenWrt x86_64](https://github.com/Reunion90/openwrt-ffmpeg-x86/actions/workflows/build-ffmpeg.yml/badge.svg)](https://github.com/Reunion90/openwrt-ffmpeg-x86/actions/workflows/build-ffmpeg.yml)
 
 ## Manual Build Instructions
 
