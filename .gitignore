@@ -2,6 +2,7 @@
 artifacts/
 *.ipk
 *.tar.xz
+*.tar.zst
 
 # Temporary build directories
 /tmp/

@@ -48,13 +48,13 @@ The repository includes automated builds using GitHub Actions:
    sudo apt-get update
    sudo apt-get install -y build-essential clang flex bison g++ gawk \
      gcc-multilib g++-multilib gettext git libncurses5-dev libssl-dev \
-     python3-distutils rsync unzip zlib1g-dev file wget subversion
+     python3-distutils rsync unzip zlib1g-dev file wget subversion zstd
    ```
 
 2. **Download OpenWrt SDK:**
    ```bash
-   wget https://downloads.openwrt.org/releases/24.10.0/targets/x86/64/openwrt-sdk-24.10.0-x86-64_gcc-13.3.0_musl.Linux-x86_64.tar.xz
-   tar -xf openwrt-sdk-24.10.0-x86-64_gcc-13.3.0_musl.Linux-x86_64.tar.xz
+   wget https://downloads.openwrt.org/releases/24.10.0/targets/x86/64/openwrt-sdk-24.10.0-x86-64_gcc-13.3.0_musl.Linux-x86_64.tar.zst
+   tar --zstd -xf openwrt-sdk-24.10.0-x86-64_gcc-13.3.0_musl.Linux-x86_64.tar.zst
    cd openwrt-sdk-24.10.0-x86-64_gcc-13.3.0_musl.Linux-x86_64
    ```
 

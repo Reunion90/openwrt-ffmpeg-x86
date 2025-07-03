@@ -38,7 +38,8 @@ jobs:
           file \
           wget \
           subversion \
-          qemu-utils
+          qemu-utils \
+          zstd
           
     - name: Set up build environment
       run: |
@@ -49,8 +50,8 @@ jobs:
     - name: Download OpenWrt SDK
       run: |
         cd /tmp
-        wget https://downloads.openwrt.org/releases/24.10.0/targets/x86/64/openwrt-sdk-24.10.0-x86-64_gcc-13.3.0_musl.Linux-x86_64.tar.xz
-        tar -xf openwrt-sdk-24.10.0-x86-64_gcc-13.3.0_musl.Linux-x86_64.tar.xz
+        wget https://downloads.openwrt.org/releases/24.10.0/targets/x86/64/openwrt-sdk-24.10.0-x86-64_gcc-13.3.0_musl.Linux-x86_64.tar.zst
+        tar --zstd -xf openwrt-sdk-24.10.0-x86-64_gcc-13.3.0_musl.Linux-x86_64.tar.zst
         mv openwrt-sdk-24.10.0-x86-64_gcc-13.3.0_musl.Linux-x86_64 /tmp/openwrt-sdk
         
     - name: Copy package files

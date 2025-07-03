@@ -8,7 +8,7 @@ set -e
 # Configuration
 OPENWRT_VERSION="24.10.0"
 OPENWRT_TARGET="x86-64"
-SDK_URL="https://downloads.openwrt.org/releases/${OPENWRT_VERSION}/targets/x86/64/openwrt-sdk-${OPENWRT_VERSION}-x86-64_gcc-13.3.0_musl.Linux-x86_64.tar.xz"
+SDK_URL="https://downloads.openwrt.org/releases/${OPENWRT_VERSION}/targets/x86/64/openwrt-sdk-${OPENWRT_VERSION}-x86-64_gcc-13.3.0_musl.Linux-x86_64.tar.zst"
 WORKSPACE_DIR="$(pwd)"
 BUILD_DIR="/tmp/openwrt-build"
 SDK_DIR="${BUILD_DIR}/openwrt-sdk"
@@ -78,7 +78,8 @@ install_dependencies() {
             zlib1g-dev \
             file \
             wget \
-            subversion
+            subversion \
+            zstd
     elif command -v dnf &> /dev/null; then
         sudo dnf install -y \
             gcc \
@@ -97,7 +98,8 @@ install_dependencies() {
             zlib-devel \
             file \
             wget \
-            subversion
+            subversion \
+            zstd
     else
         print_warning "Package manager not detected. Please install dependencies manually."
     fi
@@ -112,9 +114,9 @@ setup_sdk() {
     mkdir -p "$BUILD_DIR"
     cd "$BUILD_DIR"
     
-    if [ ! -f "openwrt-sdk.tar.xz" ]; then
+    if [ ! -f "openwrt-sdk.tar.zst" ]; then
         print_status "Downloading OpenWrt SDK..."
-        wget -O openwrt-sdk.tar.xz "$SDK_URL"
+        wget -O openwrt-sdk.tar.zst "$SDK_URL"
     else
         print_status "Using cached SDK archive."
     fi
@@ -125,7 +127,7 @@ setup_sdk() {
     fi
     
     print_status "Extracting SDK..."
-    tar -xf openwrt-sdk.tar.xz
+    tar --zstd -xf openwrt-sdk.tar.zst
     mv openwrt-sdk-* "$SDK_DIR"
     
     print_status "SDK setup complete."
