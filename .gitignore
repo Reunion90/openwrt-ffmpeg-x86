@@ -1,0 +1,51 @@
+# Build artifacts
+artifacts/
+*.ipk
+*.tar.xz
+
+# Temporary build directories
+/tmp/
+build/
+openwrt-*/
+
+# Log files
+*.log
+*.out
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Backup files
+*.bak
+*.backup
+*.orig
+
+# Package manager files
+node_modules/
+*.lock
+
+# Compiled binaries
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Archive files
+*.zip
+*.tar
+*.gz
+*.bz2
+*.xz

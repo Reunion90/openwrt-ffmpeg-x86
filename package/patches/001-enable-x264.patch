@@ -1,0 +1,10 @@
+--- a/configure
++++ b/configure
+@@ -6234,6 +6234,7 @@ enabled libx264           && { check_pkg_config libx264 x264 "stdint.h x264.h"
+                                  warn "using libx264 without pkg-config"; } } &&
+                              require_cpp_condition libx264 x264.h "X264_BUILD >= 118" &&
+                              check_cpp_condition libx262 x264.h "X264_MPEG2"
++enabled libx264           && add_cflags -DHAVE_X264
+ enabled libx265           && require_pkg_config libx265 x265 x265.h x265_api_get_build_number
+ enabled libxavs           && require libxavs "stdint.h xavs.h" xavs_encoder_encode -lxavs
+ enabled libxavs2          && require_pkg_config libxavs2 "xavs2 >= 1.3.0" "stdint.h xavs2.h" xavs2_api_get_default_param
